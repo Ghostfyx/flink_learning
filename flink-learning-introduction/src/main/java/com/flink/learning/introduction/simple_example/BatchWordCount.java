@@ -1,4 +1,4 @@
-package com.flink.learning.simple_example;
+package com.flink.learning.introduction.simple_example;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.DataSet;
@@ -18,7 +18,7 @@ public class BatchWordCount {
         // 创建执行环境
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         // 加载或创建源数据
-        DataSet<String> text = env.readTextFile("/Users/yuexiangfan/coding/JavaProject/flink_learning/src/main/java/com/flink/learning/simple_example/wordcount.txt");
+        DataSet<String> text = env.readTextFile("D:\\experiment\\flink_learning\\flink-learning-introduction\\src\\main\\java\\learning\\simple_example\\wordcount.txt");
         // 转化处理数据
         DataSet<Tuple2<String, Integer>> ds = text.flatMap(new LineSplitter()).groupBy(0).sum(1);
         // 输出数据到目的端

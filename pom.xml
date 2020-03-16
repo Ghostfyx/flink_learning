@@ -23,7 +23,11 @@ under the License.
 	<groupId>com.flink.learning</groupId>
 	<artifactId>flink_learning</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <modules>
+        <module>flink-learning-introduction</module>
+		<module>flink-learning-data-source</module>
+	</modules>
+    <packaging>pom</packaging>
 
 	<name>Flink Quickstart Job</name>
 	<url>http://www.myorganization.org</url>
@@ -67,19 +71,29 @@ under the License.
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
-
-		<!-- Example:
-
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
+			<scope>provided</scope>
 		</dependency>
-		-->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.62</version>
+		</dependency>
 
 		<!-- Add logging framework, to produce console output when running in the IDE. -->
 		<!-- These dependencies are excluded from the application JAR by default. -->
+        <!--加入下面两个依赖才会出现 Flink 的日志出来-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -144,7 +158,7 @@ under the License.
 							</filters>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.flink.learning.StreamingJob</mainClass>
+									<mainClass>StreamingJob</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
@@ -218,12 +232,20 @@ under the License.
 					<version>${flink.version}</version>
 					<scope>compile</scope>
 				</dependency>
+
 				<dependency>
 					<groupId>org.apache.flink</groupId>
 					<artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
 					<version>${flink.version}</version>
 					<scope>compile</scope>
 				</dependency>
+
+                <dependency>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
+                    <version>${flink.version}</version>
+                    <scope>compile</scope>
+                </dependency>
 			</dependencies>
 		</profile>
 	</profiles>

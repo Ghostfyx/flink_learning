@@ -1,4 +1,4 @@
-package com.flink.learning.simple_example;
+package com.flink.learning.introduction.simple_example;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
