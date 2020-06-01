@@ -1,8 +1,10 @@
 package com.flink.learning.offical.state;
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -47,11 +49,17 @@ public class CountWindowAverage extends RichFlatMapFunction<Tuple2<Long, Long>, 
 
     @Override
     public void open(Configuration configuration){
+        StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1))
+                .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite) // 何时更新过期State
+                .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired) //访问过期数据时的处理策略
+                .build();
         ValueStateDescriptor<Tuple2<Long, Long>> descriptor = new ValueStateDescriptor<>(
                 "average", // the state name
                 TypeInformation.of(new TypeHint<Tuple2<Long, Long>>() {}), // type information
                 Tuple2.of(0L, 0L)
                 ); // default value of the state, if nothing was set
+        // 设置状态TTL策略
+        descriptor.enableTimeToLive(ttlConfig);
         sum = getRuntimeContext().getState(descriptor);
     }
 }
